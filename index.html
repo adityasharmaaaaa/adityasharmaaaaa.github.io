@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aditya Sharma — AI Engineer</title>
+<meta name="description" content="AI engineer building agentic RAG systems and CUDA kernels from scratch. 4th-year B.Tech (IT) student at IIIT Bhopal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14161a;
+    --bg-panel:#1c2027;
+    --ink:#ecede8;
+    --ink-muted:#9298a1;
+    --ink-faint:#5a6069;
+    --green:#4fa97a;
+    --green-soft:rgba(79,169,122,.14);
+    --red-muted:#c97066;
+    --rule:#282d35;
+    --rule-soft:#1f232a;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+    --maxw-prose:700px;
+    --maxw-wide:920px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-padding-top:70px;}
+  @media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth;} }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:26px 26px;
+  }
+
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;color:var(--ink);}
+  p{margin:0 0 1em;}
+  a{color:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+
+  .skip-link{position:absolute;left:-9999px;top:0;background:var(--green);color:#0c0f0d;padding:10px 16px;z-index:100;}
+  .skip-link:focus{left:16px;top:16px;}
+
+  a:focus-visible, button:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px;}
+
+  /* header */
+  header{position:sticky;top:0;z-index:20;background:rgba(20,22,26,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);}
+  .header-inner{max-width:1160px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .brand{display:flex;align-items:baseline;gap:10px;flex:none;}
+  .brand-name{font-family:var(--font-display);font-weight:600;font-size:1.02rem;}
+  .brand-role{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);}
+  nav ul{display:flex;gap:20px;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-muted);flex-wrap:wrap;}
+  nav a{text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:color .15s,border-color .15s;}
+  nav a:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .header-actions{display:flex;gap:10px;flex:none;}
+  .pill-link{font-family:var(--font-mono);font-size:.78rem;color:var(--ink-muted);text-decoration:none;border:1px solid var(--rule);padding:6px 12px;border-radius:6px;white-space:nowrap;transition:border-color .15s,color .15s;}
+  .pill-link:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .pill-link.primary{color:var(--green);border-color:var(--green-soft);}
+  @media (max-width:820px){ nav{display:none;} }
+
+  /* hero */
+  .hero{max-width:1160px;margin:0 auto;padding:88px 24px 76px;display:grid;grid-template-columns:1.15fr .95fr;gap:56px;align-items:start;}
+  @media (max-width:860px){ .hero{grid-template-columns:1fr;padding-top:56px;} }
+
+  .hero h1{font-size:clamp(2.1rem,4.4vw,3.15rem);line-height:1.16;letter-spacing:-.01em;margin-bottom:22px;max-width:640px;}
+  .hero .lead{color:var(--ink-muted);font-size:1.06rem;max-width:520px;margin-bottom:30px;}
+  .hero-links{display:flex;gap:22px;font-family:var(--font-mono);font-size:.85rem;flex-wrap:wrap;}
+  .hero-links a{text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink-faint);padding-bottom:2px;transition:border-color .15s,color .15s;}
+  .hero-links a:hover{border-color:var(--green);color:var(--green);}
+
+  /* bench panel — the signature element */
+  .bench-panel{background:var(--bg-panel);border:1px solid var(--rule);border-radius:10px;padding:22px 20px 18px;font-family:var(--font-mono);}
+  .bench-caption{font-size:.72rem;color:var(--ink-faint);line-height:1.5;margin-bottom:16px;}
+  .bench-row{position:relative;display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 2px;border-bottom:1px solid var(--rule-soft);font-size:.82rem;}
+  .bench-row:last-child{border-bottom:none;padding-bottom:2px;}
+  .bench-label{color:var(--ink-muted);position:relative;z-index:1;}
+  .bench-value{color:var(--ink);white-space:nowrap;position:relative;z-index:1;}
+  .bench-value .unit{color:var(--ink-faint);font-size:.75em;margin-left:2px;}
+  .bench-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--ink-faint);width:0%;transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
+  .bench-row.final{padding-top:14px;}
+  .bench-row.final .bench-bar{background:var(--green);}
+  .bench-row.final .bench-value{color:var(--green);font-weight:600;}
+  .bench-tag{font-size:.68rem;color:var(--green);background:var(--green-soft);padding:3px 9px;border-radius:4px;white-space:nowrap;}
+  @media (prefers-reduced-motion:reduce){ .bench-bar{transition:none;} }
+
+  /* sections */
+  .section{max-width:var(--maxw-prose);margin:0 auto;padding:60px 24px;border-top:1px solid var(--rule-soft);}
+  .section-wide{max-width:var(--maxw-wide);}
+  .section h2{font-size:1.55rem;margin-bottom:30px;}
+  .section > .lead-p{color:var(--ink-muted);max-width:620px;margin-bottom:30px;}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;}
+  @media (max-width:700px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{color:var(--ink-muted);}
+  .facts{border-top:1px solid var(--rule);padding-top:18px;}
+  .facts dt{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);margin-top:16px;}
+  .facts dt:first-child{margin-top:0;}
+  .facts dd{margin:4px 0 0;font-size:.92rem;color:var(--ink);line-height:1.55;}
+
+  .stats{display:flex;gap:34px;margin:28px 0 6px;flex-wrap:wrap;}
+  .stat-num{display:block;font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--green);}
+  .stat-label{display:block;font-size:.78rem;color:var(--ink-faint);margin-top:2px;}
+  .stats-caption{font-size:.76rem;color:var(--ink-faint);}
+
+  /* skills */
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px 48px;}
+  @media (max-width:700px){ .skills-grid{grid-template-columns:1fr;} }
+  .skill-group h3{font-family:var(--font-mono);font-weight:500;font-size:.82rem;color:var(--ink-faint);margin-bottom:12px;}
+  .skill-group li{color:var(--ink-muted);font-size:.92rem;padding:6px 0;border-top:1px solid var(--rule-soft);}
+  .skill-group li:first-of-type{border-top:none;}
+  .skill-group li strong{color:var(--ink);font-weight:500;}
+
+  /* experience */
+  .job{padding:26px 0;border-top:1px solid var(--rule-soft);}
+  .job:first-child{border-top:none;padding-top:0;}
+  .job-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px 20px;flex-wrap:wrap;}
+  .job h3{font-size:1.05rem;}
+  .job-dates{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);white-space:nowrap;}
+  .job-org{font-family:var(--font-mono);font-size:.78rem;color:var(--green);margin:4px 0 10px;}
+  .job p{color:var(--ink-muted);font-size:.92rem;max-width:660px;}
+
+  /* builds (project log) */
+  .build{padding:34px 0;border-top:1px solid var(--rule-soft);}
+  .build:first-child{border-top:none;padding-top:0;}
+  .build-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px 20px;flex-wrap:wrap;margin-bottom:6px;}
+  .build h3{font-size:1.14rem;}
+  .build-status{font-family:var(--font-mono);font-size:.72rem;color:var(--green);white-space:nowrap;}
+  .build-status.status-progress{color:#d9a85b;}
+  .build-status.status-neutral{color:var(--ink-faint);}
+  .build-meta{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);margin-bottom:14px;}
+  .build-meta span{border:1px solid var(--rule);padding:2px 9px;border-radius:4px;}
+  .build p{color:var(--ink-muted);max-width:680px;font-size:.94rem;}
+  .build .result{font-family:var(--font-mono);font-size:.8rem;color:var(--green);margin-top:10px;}
+  .build .result a{text-decoration:underline;text-underline-offset:3px;}
+
+  /* more on github */
+  .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:820px){ .more-grid{grid-template-columns:1fr;} }
+  .more-card{display:block;background:var(--bg-panel);border:1px solid var(--rule);border-radius:10px;padding:20px;text-decoration:none;transition:border-color .15s;}
+  .more-card:hover{border-color:var(--ink-faint);}
+  .more-card h3{font-size:.98rem;margin-bottom:8px;}
+  .more-card p{color:var(--ink-muted);font-size:.85rem;margin-bottom:14px;}
+  .more-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .more-tags span{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-faint);border:1px solid var(--rule);padding:2px 8px;border-radius:4px;}
+
+  /* open source */
+  .oss-item{padding:24px 0;border-top:1px solid var(--rule-soft);}
+  .oss-item:first-child{border-top:none;padding-top:0;}
+  .oss-item h3{font-size:1.02rem;margin-bottom:6px;}
+  .oss-item p{color:var(--ink-muted);font-size:.92rem;max-width:640px;}
+  .oss-item .build-status{display:inline-block;margin-bottom:8px;}
+  .oss-item .result{font-family:var(--font-mono);font-size:.8rem;margin-top:8px;}
+  .oss-item .result a{color:var(--green);text-decoration:underline;text-underline-offset:3px;}
+
+  /* notes */
+  .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;}
+  @media (max-width:820px){ .notes-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:480px){ .notes-grid{grid-template-columns:1fr;} }
+  .note-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-panel);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;text-decoration:none;transition:border-color .15s;}
+  .note-card:hover{border-color:var(--ink-faint);}
+  .note-card h3{font-size:.92rem;font-weight:500;}
+  .note-tag{font-family:var(--font-mono);font-size:.68rem;color:var(--green);border:1px solid var(--green-soft);padding:2px 8px;border-radius:4px;white-space:nowrap;flex:none;}
+  .note-card-soon{border-style:dashed;opacity:.65;}
+  .note-card-soon .note-tag{color:var(--ink-faint);border-color:var(--rule);}
+
+  /* currently */
+  .now-list li{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--rule-soft);font-size:.94rem;color:var(--ink-muted);}
+  .now-list li:first-child{border-top:none;}
+  .now-dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--green);margin-top:8px;}
+
+  /* contact */
+  .contact-list dt{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);margin-top:18px;}
+  .contact-list dt:first-child{margin-top:0;}
+  .contact-list dd{margin:4px 0 0;font-size:1rem;}
+  .contact-list a{text-decoration:none;border-bottom:1px solid var(--ink-faint);padding-bottom:1px;transition:border-color .15s,color .15s;}
+  .contact-list a:hover{color:var(--green);border-color:var(--green);}
+
+  footer{max-width:var(--maxw-prose);margin:0 auto;padding:36px 24px 60px;font-family:var(--font-mono);font-size:.75rem;color:var(--ink-faint);}
+  footer .footer-note{margin-top:6px;}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-name">Aditya Sharma</span>
+      <span class="brand-role">AI Engineer</span>
+    </div>
+    <nav aria-label="Section navigation">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#builds">Builds</a></li>
+        <li><a href="#notes">Notes</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="pill-link" href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a class="pill-link" href="https://github.com/adityasharmaaaaa" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>AI engineering, from CUDA kernels to agentic pipelines.</h1>
+      <p class="lead">4th-year B.Tech (IT) student at IIIT Bhopal. I build production-style RAG and agent systems, and I go one layer down to understand — and rewrite — what's happening on the GPU underneath them.</p>
+      <div class="hero-links">
+        <a href="#builds">See what I've built</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        <a href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="bench-panel" aria-label="Benchmark results for a fused CUDA attention kernel">
+      <div class="bench-caption">fused attention kernel — forward-pass latency<br>real reranker shape, batch 50 · heads 12 · seq 512, masked</div>
+
+      <div class="bench-row" data-w="100%">
+        <span class="bench-label">naive kernel</span>
+        <span class="bench-value">286.00<span class="unit">ms</span></span>
+        <div class="bench-bar" data-w="100%"></div>
+      </div>
+      <div class="bench-row" data-w="33.7%">
+        <span class="bench-label">shared-memory tiling</span>
+        <span class="bench-value">96.30<span class="unit">ms</span></span>
+        <div class="bench-bar" data-w="33.7%"></div>
+      </div>
+      <div class="bench-row" data-w="21.4%">
+        <span class="bench-label">float4 vectorized</span>
+        <span class="bench-value">61.29<span class="unit">ms</span></span>
+        <div class="bench-bar" data-w="21.4%"></div>
+      </div>
+      <div class="bench-row final" data-w="2.7%">
+        <span class="bench-label">fused online-softmax</span>
+        <span class="bench-value">7.70<span class="unit">ms</span></span>
+        <span class="bench-tag">25% faster than PyTorch SDPA</span>
+        <div class="bench-bar" data-w="2.7%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <h2>About</h2>
+    <div class="about-grid">
+      <div>
+        <p>I'm a 4th-year B.Tech (Information Technology) student at IIIT Bhopal, graduating in 2027, working toward becoming an AI engineer with real systems depth — not just framework fluency.</p>
+        <p>Most of my time splits between two things: building agentic and RAG systems that hold up under adversarial testing, not just a demo query, and writing and profiling CUDA kernels to understand what libraries like PyTorch are actually doing underneath. I also spend time on the backend side of things — APIs, task queues, evaluation infrastructure — since a model is only as good as the system serving it.</p>
+
+        <div class="stats">
+          <div class="stat"><span class="stat-num">50%</span><span class="stat-label">ML systems & infra</span></div>
+          <div class="stat"><span class="stat-num">40%</span><span class="stat-label">applied AI engineering</span></div>
+          <div class="stat"><span class="stat-num">10%</span><span class="stat-label">research</span></div>
+        </div>
+        <p class="stats-caption">roughly how I split my learning time right now</p>
+      </div>
+
+      <dl class="facts">
+        <dt>Education</dt>
+        <dd>B.Tech, Information Technology<br>IIIT Bhopal, 2023–2027<br>CGPA 9.02 / 10.0</dd>
+        <dt>Competitive programming</dt>
+        <dd>LeetCode Guardian — 2665, top 0.09% globally<br>Codeforces Specialist — 1468<br>CodeChef 4-Star — 1856, global rank 168/28k+ in Starters</dd>
+        <dt>Focus</dt>
+        <dd>AI systems + applied agentic engineering</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section section-wide" id="skills">
+    <h2>What I know</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Systems & low-level</h3>
+        <ul>
+          <li><strong>CUDA kernel programming</strong> — writing, profiling with Nsight Compute/Systems, and optimizing kernels from naive to fused, vectorized implementations</li>
+          <li><strong>GPU performance analysis</strong> — memory throttles, shared-memory tiling, vectorized loads, occupancy trade-offs</li>
+          <li><strong>PyTorch internals</strong> — attention mechanism internals, registering custom kernels into HuggingFace's AttentionInterface</li>
+          <li><strong>Distributed training internals</strong> — currently studying DeepSeek V3's architecture from scratch</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Applied AI & agentic systems</h3>
+        <ul>
+          <li><strong>LangChain & LangGraph</strong> — LCEL chains, stateful and cyclic graphs, conditional routing, multi-agent pipelines</li>
+          <li><strong>Advanced RAG</strong> — Corrective RAG, hybrid retrieval (BM25 + embeddings), MMR, contextual compression, query refinement, re-ranking</li>
+          <li><strong>Model Context Protocol (MCP)</strong></li>
+          <li><strong>LLM training & evaluation</strong> — LoRA/QLoRA fine-tuning, post-training (RLHF, RLVR), vLLM serving, RAGAS & DeepEval, custom Guardrails-AI validators</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Data & backend</h3>
+        <ul>
+          <li><strong>Vector stores</strong> — Chroma, Qdrant</li>
+          <li><strong>SQL</strong> — PostgreSQL, SQLite, funnel analysis, natural-language-to-SQL pipelines</li>
+          <li><strong>APIs & infra</strong> — FastAPI, Redis, Celery, Docker, GitHub Actions</li>
+          <li><strong>LLM APIs</strong> — Gemini, OpenAI, Groq, Anthropic</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Foundations</h3>
+        <ul>
+          <li><strong>Machine learning & deep learning</strong> — completed, project-backed</li>
+          <li><strong>Neural networks from scratch</strong> — Andrej Karpathy's Zero to Hero series, all lectures and implementations</li>
+          <li><strong>Languages</strong> — Python, C, C++, Java, CUDA, SQL, Bash</li>
+          <li><strong>CS fundamentals</strong> — operating systems, computer architecture, networks, distributed systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <h2>Experience</h2>
+
+    <div class="job">
+      <div class="job-head">
+        <h3>Freelance Systems Evaluation Engineer</h3>
+        <span class="job-dates">May – Aug 2026</span>
+      </div>
+      <div class="job-org">Airdawg Labs</div>
+      <p>Engineered deterministic evaluation suites in Python, Go, and Rust across 1,200+ test cases in isolated Docker environments, benchmarking frontier LLM coding agents. Reduced CI/CD pipeline validation bottlenecks by 35%, and calibrated task difficulty for GPT- and Claude-class models — driving worst-model pass rates below 20% for rigorous, enterprise-grade evaluation.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <h3>AI Engineer Intern</h3>
+        <span class="job-dates">July 2026</span>
+      </div>
+      <div class="job-org">Get Set Skilled Pvt Ltd</div>
+      <p>Integrated LLMs and built Retrieval-Augmented Generation pipelines for the <a href="https://margdarshakai.com/" target="_blank" rel="noopener">Margdarshak AI</a> platform, improving API response times by 15% and ensuring highly relevant context retrieval. Collaborated with the engineering team resolving system bugs and deploying enhancements, achieving 100% compliance with enterprise security and coding standards.</p>
+    </div>
+  </section>
+
+  <!-- BUILDS -->
+  <section class="section section-wide" id="builds">
+    <h2>Featured builds</h2>
+
+    <div class="build">
+      <div class="build-head">
+        <h3>CUDA Reranker — a fused attention kernel that beats PyTorch's SDPA</h3>
+        <span class="build-status">Complete</span>
+      </div>
+      <div class="build-meta"><span>CUDA</span><span>Nsight Compute/Systems</span><span>PyTorch</span><span>HuggingFace Transformers</span><span>BeIR / SciFact</span></div>
+      <p>Built a RAG reranking pipeline (SciFact/BEIR, MiniLM cross-encoder), profiled it with Nsight Compute to find the true attention bottleneck, then hand-wrote a fused CUDA kernel — register caching, shared-memory tiling, float4 vectorization, and an online-softmax redesign — cutting latency from 286ms to 10.5ms, roughly 29x faster than the naive baseline.</p>
+      <p>Added padding-mask support and a tile-skip optimization guided by Nsight stall analysis, reaching 7.70ms against PyTorch SDPA's 10.27ms masked latency — about 25% faster. Integrated the kernel into an unmodified HuggingFace BERT model via transformers' AttentionInterface, validating near machine-precision logits (1.9e-6 error) and zero ranking regression (20/20 top-10 match).</p>
+      <div class="result"><a href="https://github.com/adityasharmaaaaa/cuda-reranker" target="_blank" rel="noopener">View the repo</a></div>
+    </div>
+
+    <div class="build">
+      <div class="build-head">
+        <h3>repo-trace — an agentic RAG copilot that corrects its own bad retrievals</h3>
+        <span class="build-status">Complete</span>
+      </div>
+      <div class="build-meta"><span>LangGraph</span><span>Python</span><span>ChromaDB</span><span>Gemini</span><span>Guardrails-AI</span><span>RAGAS</span></div>
+      <p>Answers questions about an unfamiliar codebase the way a senior engineer onboarding you would: by grading its own retrieved context and correcting course when it's wrong. Architected as an 8-node Corrective RAG (CRAG) LangGraph StateGraph — documents are graded correct, ambiguous, or incorrect, and anything short of "correct" routes to query refinement, a live web fallback, or reranking before generation, so a weak retrieval doesn't quietly turn into a hallucinated answer.</p>
+      <p>Built a custom asymmetric MMR retriever and a structured-output relevance filter after root-causing a production LLMChainFilter failure caused by Gemini's multi-block response format. Every citation is checked against the real evidence set by a custom guardrail with two independent retry-loop counters, one for retrieval and one for generation. Full pipeline evaluated with RAGAS: 0.884 Faithfulness, 0.839 Context Precision, sliced per graph execution path.</p>
+      <div class="result"><a href="https://github.com/adityasharmaaaaa/repo-trace" target="_blank" rel="noopener">View the repo</a></div>
+    </div>
+
+    <div class="build">
+      <div class="build-head">
+        <h3>Ask a spreadsheet a question in plain English</h3>
+        <span class="build-status">Complete</span>
+      </div>
+      <div class="build-meta"><span>Streamlit</span><span>LangGraph</span><span>LangChain</span><span>Gemini</span><span>SQLite</span></div>
+      <p>Built for an AI Engineer technical assignment: upload any CSV, ask questions in plain language, and get back real SQL queries executed against an actual database, plus charts, anomaly detection, data-quality checks, and forecasting. Structured as an explicit multi-node LangGraph with a router, rather than one prompt trying to do everything.</p>
+      <div class="result">This assignment led to an interview.</div>
+    </div>
+
+    <div class="build">
+      <div class="build-head">
+        <h3>Hybrid-retrieval RAG system</h3>
+        <span class="build-status status-neutral">Technical assignment</span>
+      </div>
+      <div class="build-meta"><span>LangChain</span><span>LangGraph</span><span>Chroma</span><span>Gemini</span></div>
+      <p>Built for the ByteVox AI/ML Engineering Internship assignment. Combines hybrid retrieval (BM25 + embeddings) with LLM-based reranking, plus an agentic retrieval layer built with LangGraph as the bonus track.</p>
+    </div>
+
+    <div class="build">
+      <div class="build-head">
+        <h3>A 4-agent pipeline that drafts a brand-launch blueprint</h3>
+        <span class="build-status status-neutral">Competition entry</span>
+      </div>
+      <div class="build-meta"><span>LangGraph</span><span>Multi-agent</span><span>RAG</span></div>
+      <p>Built for Think9's AI & Intelligence Challenge: an agentic system that produces a structured launch blueprint — market read, positioning, pricing, sourcing shortlist, creative brief — for new consumer brands, drawing on a memory layer built from past launches. Built as a full 4-agent LangGraph pipeline (market signal, memory/RAG, synthesis, and critic agents) rather than a cut-down demo, on a 3-day deadline.</p>
+    </div>
+  </section>
+
+  <!-- MORE ON GITHUB -->
+  <section class="section section-wide" id="more">
+    <h2>More on GitHub</h2>
+    <p class="lead-p">A few other things I've built exploring different corners of ML.</p>
+    <div class="more-grid">
+      <a class="more-card" href="https://github.com/adityasharmaaaaa/WikiRace-RL" target="_blank" rel="noopener">
+        <h3>WikiRace-RL</h3>
+        <p>A Dueling DQN agent that learns to navigate from one Wikipedia page to another using semantic (BERT) embeddings instead of a graph map. Hindsight Experience Replay took its success rate from 0% to 73% across a 10,000+ node graph.</p>
+        <div class="more-tags"><span>Deep RL</span><span>Dueling DQN</span><span>HER</span></div>
+      </a>
+      <a class="more-card" href="https://github.com/adityasharmaaaaa/eta-transformer-anomaly" target="_blank" rel="noopener">
+        <h3>ETA-Transformer</h3>
+        <p>A self-supervised, BERT-style transformer that flags zero-day network anomalies from encrypted traffic metadata alone, no packet payloads, by learning to reconstruct normal traffic and treating high reconstruction error as the signal.</p>
+        <div class="more-tags"><span>Self-supervised</span><span>Security</span><span>PyTorch</span></div>
+      </a>
+      <a class="more-card" href="https://github.com/adityasharmaaaaa/event_pred_engine" target="_blank" rel="noopener">
+        <h3>Sentinel</h3>
+        <p>A multimodal temporal transformer that fuses global news (50+ languages) with financial market data over a geospatial grid to forecast civil unrest and economic shocks 24–72 hours out, with attention-based explainability.</p>
+        <div class="more-tags"><span>Temporal fusion</span><span>Multimodal</span><span>FastAPI</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- OPEN SOURCE -->
+  <section class="section" id="open-source">
+    <h2>Open source</h2>
+
+    <div class="oss-item">
+      <span class="build-status">Merged</span>
+      <h3>AlphaGPU / leetgpu-challenges</h3>
+      <p>Found and fixed a bug in the JAX starter template for a GEMM challenge — a missing parameter was causing a TypeError at test time. PR merged. Now building a new challenge for the repo from scratch: a fused AdamW optimizer kernel.</p>
+      <div class="result"><a href="https://github.com/AlphaGPU/leetgpu-challenges" target="_blank" rel="noopener">View the repo</a></div>
+    </div>
+
+    <div class="oss-item">
+      <span class="build-status status-progress">In progress</span>
+      <h3>tugot17 / pmpp</h3>
+      <p>Working through an open issue on the BlockTranspose kernel (Chapter 5, Exercise 10) — checking whether it synchronizes correctly across different block sizes, as a candidate fix to contribute back.</p>
+      <div class="result"><a href="https://github.com/tugot17/pmpp" target="_blank" rel="noopener">View the repo</a></div>
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <section class="section section-wide" id="notes">
+    <h2>Notes</h2>
+    <p class="lead-p">Handwritten notes from working through topics in depth.</p>
+    <div class="notes-grid">
+      <a class="note-card" href="https://drive.google.com/file/d/10r1_0j5PARBY6l-qZtMende5pClAuNNe/view?usp=sharing" target="_blank" rel="noopener">
+        <h3>RAG</h3>
+        <span class="note-tag">PDF</span>
+      </a>
+      <a class="note-card" href="https://drive.google.com/file/d/1PTlNwm-od2fONOPCTBTmfd9FL3kywPAx/view?usp=sharing" target="_blank" rel="noopener">
+        <h3>Deep Learning</h3>
+        <span class="note-tag">PDF</span>
+      </a>
+      <a class="note-card" href="https://drive.google.com/file/d/1whEcIw67qZM9hxcIlegOVVAbwk1vqwqW/view?usp=sharing" target="_blank" rel="noopener">
+        <h3>Operating Systems</h3>
+        <span class="note-tag">PDF</span>
+      </a>
+      <div class="note-card note-card-soon">
+        <h3>LLM Evals</h3>
+        <span class="note-tag">Coming soon</span>
+      </div>
+      <div class="note-card note-card-soon">
+        <h3>Post-training</h3>
+        <span class="note-tag">Coming soon</span>
+      </div>
+      <div class="note-card note-card-soon">
+        <h3>Distributed Training</h3>
+        <span class="note-tag">Coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRENTLY -->
+  <section class="section" id="now">
+    <h2>Right now</h2>
+    <ul class="now-list">
+      <li><span class="now-dot"></span>Building Flash Attention from scratch</li>
+      <li><span class="now-dot"></span>Learning post-training — RLHF and RLVR</li>
+      <li><span class="now-dot"></span>Studying distributed training from scratch, working through DeepSeek V3's architecture</li>
+    </ul>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <h2>Get in touch</h2>
+    <p class="lead-p">I'm looking for AI engineering roles and internships where I can keep working close to the metal. The fastest ways to reach me:</p>
+    <dl class="contact-list">
+      <dt>Email</dt>
+      <dd><a href="mailto:adityasharma00070@gmail.com">adityasharma00070@gmail.com</a></dd>
+      <dt>GitHub</dt>
+      <dd><a href="https://github.com/adityasharmaaaaa" target="_blank" rel="noopener">github.com/adityasharmaaaaa</a></dd>
+      <dt>LinkedIn</dt>
+      <dd><a href="https://www.linkedin.com/in/aditya-sharma-1797a61ab/" target="_blank" rel="noopener">linkedin.com/in/aditya-sharma</a></dd>
+      <dt>LeetCode</dt>
+      <dd><a href="https://leetcode.com/u/adityasharma00070/" target="_blank" rel="noopener">leetcode.com/u/adityasharma00070</a></dd>
+      <dt>Codeforces</dt>
+      <dd><a href="https://codeforces.com/profile/AdityaSharma._" target="_blank" rel="noopener">codeforces.com/profile/AdityaSharma._</a></dd>
+      <dt>Résumé</dt>
+      <dd><a href="resume.pdf" target="_blank" rel="noopener">Download PDF</a></dd>
+    </dl>
+  </section>
+
+</main>
+
+<footer>
+  <div>© <span id="year"></span> Aditya Sharma</div>
+  <div class="footer-note">This site is vibe-coded — built by prompting Claude, not hand-written frontend.</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  window.addEventListener('DOMContentLoaded', function () {
+    var bars = document.querySelectorAll('.bench-bar');
+    setTimeout(function () {
+      bars.forEach(function (b) {
+        b.style.width = b.getAttribute('data-w');
+      });
+    }, 200);
+  });
+</script>
+
+</body>
+</html>
