@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aditya Sharma — AI Engineer</title>
-<meta name="description" content="AI engineer building agentic RAG systems and CUDA kernels from scratch. 4th-year B.Tech (IT) student at IIIT Bhopal.">
+<meta name="description" content="AI engineer building agentic RAG systems and CUDA kernels from scratch. Contributor to PyTorch core. 4th-year B.Tech (IT) student at IIIT Bhopal.">
 <meta name="theme-color" content="#14161a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +20,9 @@
     --green:#4fa97a;
     --green-bright:#7ed4a8;
     --green-soft:rgba(79,169,122,.14);
+    --pt:#ee4c2c;
+    --pt-soft:rgba(238,76,44,.1);
+    --pt-line:rgba(238,76,44,.38);
     --rule:#282d35;
     --rule-soft:#1f232a;
     --font-display:'Space Grotesk',sans-serif;
@@ -62,8 +65,10 @@
   .skip-link:focus{left:16px;top:16px;}
   a:focus-visible, button:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px;}
 
-  main p a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:3px;transition:color .15s,text-decoration-color .15s;}
-  main p a:hover{color:var(--green);text-decoration-color:var(--green);}
+  main p a,.facts dd a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:3px;transition:color .15s,text-decoration-color .15s;}
+  main p a:hover,.facts dd a:hover{color:var(--green);text-decoration-color:var(--green);}
+
+  .mono{font-family:var(--font-mono);font-size:.9em;}
 
   /* ---------- ambient layers ---------- */
   #progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;background:linear-gradient(90deg,var(--green),var(--green-bright));transform:scaleX(0);transform-origin:0 50%;}
@@ -90,7 +95,7 @@
   .brand-mark{font-family:var(--font-mono);font-size:.66rem;color:var(--green);border:1px solid rgba(79,169,122,.35);background:var(--green-soft);padding:4px 7px;border-radius:6px;letter-spacing:.05em;}
   .brand-name{font-family:var(--font-display);font-weight:600;font-size:1.02rem;}
   .brand-role{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);}
-  nav ul{display:flex;gap:22px;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-muted);flex-wrap:wrap;}
+  nav ul{display:flex;gap:20px;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-muted);flex-wrap:wrap;}
   nav a{text-decoration:none;position:relative;padding:2px 0;color:var(--ink-muted);transition:color .2s;}
   nav a::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease);}
   nav a:hover{color:var(--ink);}
@@ -123,7 +128,12 @@
   .hero{max-width:1160px;margin:0 auto;padding:84px 24px 76px;display:grid;grid-template-columns:1.15fr .95fr;gap:56px;align-items:start;}
   @media (max-width:860px){ .hero{grid-template-columns:1fr;padding-top:56px;gap:40px;} }
 
-  .hero-status{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink-muted);border:1px solid var(--rule);border-radius:999px;padding:6px 14px;margin-bottom:26px;background:rgba(28,32,39,.6);}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px;}
+  .hero-status{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink-muted);border:1px solid var(--rule);border-radius:999px;padding:6px 14px;background:rgba(28,32,39,.6);}
+  .hero-status-pt{text-decoration:none;border-color:var(--pt-line);transition:transform .25s var(--ease),border-color .25s;}
+  .hero-status-pt:hover{transform:translateY(-1px);border-color:rgba(238,76,44,.6);}
+  .hero-status-pt .hf{width:12px;height:12px;color:var(--pt);flex:none;}
+  .hero-status-pt .hhash{color:var(--pt);font-size:.66rem;}
 
   .hero-eyebrow{font-family:var(--font-mono);font-size:.78rem;color:var(--ink-muted);margin-bottom:18px;}
   .caret{display:inline-block;width:9px;height:15px;margin-left:4px;background:var(--green);vertical-align:-2px;}
@@ -139,8 +149,27 @@
   .btn-primary .arrow{transition:transform .25s var(--ease);}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px -12px rgba(79,169,122,.6);}
   .btn-primary:hover .arrow{transform:translateX(4px);}
+  .btn-pt{background:var(--pt);color:#20100a;font-weight:600;}
+  .btn-pt .arrow{transition:transform .25s var(--ease);}
+  .btn-pt:hover{transform:translateY(-2px);box-shadow:0 12px 32px -12px rgba(238,76,44,.55);}
+  .btn-pt:hover .arrow{transform:translateX(4px);}
   .btn-ghost{border:1px solid var(--rule);color:var(--ink-muted);}
   .btn-ghost:hover{border-color:rgba(79,169,122,.5);color:var(--green);transform:translateY(-2px);}
+
+  /* ---------- pytorch announcement strip ---------- */
+  .announce{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:linear-gradient(90deg,rgba(238,76,44,.08),rgba(238,76,44,.02) 60%,transparent),#171a1f;}
+  .announce + .section{border-top:none;}
+  .announce-inner{max-width:1160px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .announce-flame{width:22px;height:22px;flex:none;color:var(--pt);transform-box:fill-box;transform-origin:50% 100%;}
+  .announce p{margin:0;flex:1;min-width:230px;font-size:.9rem;color:var(--ink-muted);}
+  .announce p strong{color:var(--ink);font-weight:600;}
+  .announce p a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--pt-line);text-underline-offset:3px;transition:color .15s,text-decoration-color .15s;}
+  .announce p a:hover{color:var(--pt);text-decoration-color:var(--pt);}
+  .announce p .mono{color:var(--ink);}
+  .announce-link{font-family:var(--font-mono);font-size:.74rem;color:var(--pt);text-decoration:none;border:1px solid var(--pt-line);padding:6px 12px;border-radius:6px;white-space:nowrap;transition:border-color .2s,background .2s,transform .2s;}
+  .announce-link:hover{background:var(--pt-soft);border-color:rgba(238,76,44,.6);transform:translateY(-1px);}
+  .announce-link span{display:inline-block;transition:transform .25s var(--ease);}
+  .announce-link:hover span{transform:translate(2px,-2px);}
 
   /* ---------- bench panel ---------- */
   .bench-panel{position:relative;background:linear-gradient(180deg,#20252d,#191d23);border:1px solid var(--rule);border-radius:10px;padding:22px 22px 18px;font-family:var(--font-mono);box-shadow:0 30px 80px -40px rgba(0,0,0,.85),0 30px 90px -50px rgba(79,169,122,.28),inset 0 1px 0 rgba(255,255,255,.04);}
@@ -224,6 +253,53 @@
   .job-org{display:inline-block;font-family:var(--font-mono);font-size:.74rem;color:var(--green);background:var(--green-soft);border:1px solid rgba(79,169,122,.25);padding:3px 10px;border-radius:5px;margin:6px 0 12px;}
   .job p{color:var(--ink-muted);font-size:.92rem;max-width:660px;}
 
+  /* ---------- pytorch feature ---------- */
+  .pt-feature{display:grid;grid-template-columns:1.3fr 1fr;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--bg-panel);box-shadow:0 30px 80px -42px rgba(0,0,0,.9);}
+  .pt-main{position:relative;padding:30px 28px 28px;}
+  .pt-main::before{content:"";position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--pt),rgba(238,76,44,.05));}
+  .pt-kicker{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:.72rem;color:var(--pt);letter-spacing:.02em;margin-bottom:16px;}
+  .pt-kicker .kf{width:15px;height:15px;flex:none;transform-box:fill-box;transform-origin:50% 100%;}
+  .pt-main h3{font-size:clamp(1.3rem,2.4vw,1.6rem);line-height:1.25;margin-bottom:16px;}
+  .pt-main p{color:var(--ink-muted);font-size:.95rem;}
+  .pt-stats{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-faint);margin-top:18px;}
+  .pt-stats span{border:1px solid var(--rule);padding:3px 10px;border-radius:4px;}
+  .pt-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;}
+  .pt-flow-wrap{margin-top:26px;padding-top:24px;border-top:1px solid var(--rule-soft);}
+  .pt-flow{display:block;width:100%;max-width:360px;overflow:visible;}
+  .pt-flow-track{stroke:#2e343d;stroke-width:1.5;fill:none;}
+  .pt-flow-line{stroke:var(--green);stroke-width:1.5;fill:none;}
+  .pt-flow-pkt circle{fill:var(--pt);}
+  .pt-lab{font-family:var(--font-mono);font-size:7px;fill:var(--ink-faint);letter-spacing:.02em;}
+  .pt-lab-mid{fill:#454c56;}
+  .pt-node-l{fill:#2b313a;stroke:#3a4149;stroke-width:1.5;}
+  .pt-ring{fill:none;stroke:#3a4149;stroke-width:1.5;}
+  .pt-fill{fill:var(--green);transform-box:fill-box;transform-origin:center;}
+  .pt-check{fill:none;stroke:#0b120e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  .gh-card{border-left:1px solid var(--rule);background:#171a20;padding:24px 22px;display:flex;flex-direction:column;font-family:var(--font-mono);}
+  .gh-repo{display:flex;align-items:center;gap:10px;}
+  .gh-repo .ghf{width:18px;height:18px;color:var(--pt);flex:none;}
+  .gh-repo-name{font-size:.88rem;color:var(--ink);}
+  .gh-repo-name em{font-style:normal;color:var(--ink-faint);padding:0 1px;}
+  .gh-public{margin-left:auto;font-size:.62rem;color:var(--ink-faint);border:1px solid var(--rule);border-radius:999px;padding:2px 8px;white-space:nowrap;}
+  .gh-commit{display:block;margin-top:18px;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;background:rgba(255,255,255,.02);text-decoration:none;transition:border-color .2s,transform .25s var(--ease);}
+  .gh-commit:hover{border-color:var(--pt-line);transform:translateY(-2px);}
+  .gh-commit-head{display:flex;align-items:center;gap:9px;font-size:.78rem;color:var(--ink);}
+  .gh-merged-ic{width:17px;height:17px;color:var(--green);flex:none;}
+  .gh-merged-label{color:var(--green);font-weight:500;}
+  .gh-hash{margin-left:auto;color:var(--ink-faint);}
+  .gh-commit-meta{display:block;margin-top:8px;font-size:.68rem;color:var(--ink-faint);line-height:1.7;}
+  .gh-commit-meta b{color:var(--ink-muted);font-weight:500;}
+  .gh-stats{margin-top:auto;padding-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .gh-stat{border:1px solid var(--rule-soft);border-radius:8px;padding:12px 14px;}
+  .gh-num{display:block;font-size:.95rem;color:var(--ink);}
+  .gh-sub{display:block;font-size:.62rem;color:var(--ink-faint);margin-top:3px;}
+  @media (max-width:760px){
+    .pt-feature{grid-template-columns:1fr;}
+    .gh-card{border-left:none;border-top:1px solid var(--rule);}
+    .gh-stats{margin-top:20px;}
+  }
+
   /* ---------- builds ---------- */
   .build{position:relative;padding:34px 0 34px 20px;border-top:1px solid var(--rule-soft);}
   .build:first-of-type{border-top:none;padding-top:0;}
@@ -300,7 +376,7 @@
 
   /* ---------- footer ---------- */
   footer{max-width:var(--maxw-prose);margin:0 auto;padding:36px 24px 60px;font-family:var(--font-mono);font-size:.75rem;color:var(--ink-faint);}
-  .footer-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;}
+  .footer-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;}
   .footer-note{margin-top:6px;}
   .to-top{display:inline-flex;align-items:center;gap:6px;color:var(--ink-faint);text-decoration:none;border:1px solid var(--rule);padding:6px 12px;border-radius:6px;white-space:nowrap;transition:color .2s,border-color .2s,transform .2s;}
   .to-top:hover{color:var(--green);border-color:rgba(79,169,122,.4);transform:translateY(-2px);}
@@ -308,14 +384,18 @@
   .sprite{display:none;}
 
   /* =========================================================
-     MOTION — everything below is gated so that users with
-     prefers-reduced-motion (or without JS) get a fully rendered
-     static page with final values.
+     MOTION — gated behind prefers-reduced-motion + JS.
      ========================================================= */
   @keyframes blink{0%,45%{opacity:1;}50%,95%{opacity:0;}}
   @keyframes pulse-ring{0%{transform:scale(1);opacity:.55;}70%,100%{transform:scale(2.8);opacity:0;}}
   @keyframes drift-a{from{transform:translate(0,0) scale(1);}to{transform:translate(-6%,8%) scale(1.15);}}
   @keyframes drift-b{from{transform:translate(0,0) scale(1.1);}to{transform:translate(8%,-6%) scale(1);}}
+  @keyframes flicker{
+    0%,100%{transform:scale(1) rotate(0);}
+    22%{transform:scale(1.07,.96) rotate(-2deg);}
+    48%{transform:scale(.96,1.04) rotate(1.5deg);}
+    72%{transform:scale(1.05,.98) rotate(-1deg);}
+  }
 
   @media (prefers-reduced-motion:no-preference){
     .caret{animation:blink 1.1s steps(1) infinite;}
@@ -326,6 +406,8 @@
     .aurora i:nth-child(2){animation:drift-b 34s ease-in-out infinite alternate;}
     .build-status:not(.status-progress):not(.status-neutral)::before{animation:pulse-ring 2.8s cubic-bezier(.2,.6,.4,1) infinite;}
     .bench-bar{transition:width 1.2s var(--ease-io);}
+    .announce-flame{animation:flicker 1.4s ease-in-out infinite;filter:drop-shadow(0 0 9px rgba(238,76,44,.4));}
+    .pt-kicker .kf{animation:flicker 1.4s ease-in-out infinite .4s;}
 
     /* entrance animations (JS-gated) */
     html.js .fade-item{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease) var(--fd,0s),transform .9s var(--ease) var(--fd,0s);}
@@ -352,15 +434,32 @@
     html.js .spark-dot:nth-of-type(2){transition-delay:.95s;}
     html.js .spark-dot:nth-of-type(3){transition-delay:1.4s;}
     html.js .spark-dot:nth-of-type(4){transition-delay:1.85s;}
+
+    /* fork → main merge diagram */
+    html.js .pt-flow-line{stroke-dasharray:208;stroke-dashoffset:208;transition:stroke-dashoffset .7s var(--ease-io) .35s;}
+    html.js .pt-feature.is-visible .pt-flow-line{stroke-dashoffset:0;}
+    html.js .pt-flow-pkt{transform:translateX(0);transition:transform .75s cubic-bezier(.45,0,.25,1) .9s,opacity .25s ease 1.55s;}
+    html.js .pt-feature.is-visible .pt-flow-pkt{transform:translateX(208px);opacity:0;}
+    html.js .pt-fill{transform:scale(0);transition:transform .45s cubic-bezier(.34,1.56,.64,1) 1.6s;}
+    html.js .pt-feature.is-visible .pt-fill{transform:scale(1);}
+    html.js .pt-check{stroke-dasharray:12;stroke-dashoffset:12;transition:stroke-dashoffset .35s ease 1.85s;}
+    html.js .pt-feature.is-visible .pt-check{stroke-dashoffset:0;}
   }
   @media (prefers-reduced-motion:reduce){
-    .bench-bar,.reveal,.stagger>*,.fade-item,.spark-path,.spark-dot{transition:none;}
+    .bench-bar,.reveal,.stagger>*,.fade-item,.spark-path,.spark-dot,.pt-flow-line,.pt-flow-pkt,.pt-fill,.pt-check{transition:none;}
   }
 </style>
 </head>
 <body>
 
 <svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-flame" viewBox="0 0 24 24">
+    <path fill="currentColor" fill-rule="evenodd" d="M12 1.2 C11.5 4.5 9.2 6.7 7.2 8.7 C5.3 10.7 4 12.6 4 15.1 C4 19.6 7.6 23 12 23 C16.4 23 20 19.6 20 15.1 C20 13.4 19.5 11.9 18.7 10.5 C18.6 12.3 17.8 13.6 16.6 14.3 C17.1 9.6 14.8 5 12 1.2 Z M12 12.6 a2.8 2.8 0 1 0 0 5.6 a2.8 2.8 0 1 0 0 -5.6 Z"/>
+  </symbol>
+  <symbol id="i-merged" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <path d="m8.4 12.3 2.5 2.5 4.7-5.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
   <symbol id="i-mail" viewBox="0 0 24 24">
     <rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
     <path d="m3.5 7.5 8.5 5.5 8.5-5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -403,6 +502,7 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#builds">Builds</a></li>
+        <li><a href="#pytorch">PyTorch</a></li>
         <li><a href="#notes">Notes</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -421,8 +521,9 @@
       <li><a href="#skills"><span class="mnav-num">02</span>Skills</a></li>
       <li><a href="#experience"><span class="mnav-num">03</span>Experience</a></li>
       <li><a href="#builds"><span class="mnav-num">04</span>Builds</a></li>
-      <li><a href="#notes"><span class="mnav-num">07</span>Notes</a></li>
-      <li><a href="#contact"><span class="mnav-num">09</span>Contact</a></li>
+      <li><a href="#pytorch"><span class="mnav-num">05</span>PyTorch</a></li>
+      <li><a href="#notes"><span class="mnav-num">08</span>Notes</a></li>
+      <li><a href="#contact"><span class="mnav-num">10</span>Contact</a></li>
     </ul>
     <div class="mnav-pills">
       <a class="pill-link primary" href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
@@ -436,14 +537,20 @@
   <!-- HERO -->
   <section class="hero">
     <div>
-      <div class="hero-status fade-item" style="--fd:.05s"><span class="pulse-dot"></span>Open to AI engineering roles &amp; internships</div>
+      <div class="hero-badges fade-item" style="--fd:.05s">
+        <span class="hero-status"><span class="pulse-dot"></span>Open to AI engineering roles &amp; internships</span>
+        <a class="hero-status hero-status-pt" href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">
+          <svg class="hf" aria-hidden="true"><use href="#i-flame"/></svg>
+          Merged into PyTorch core<span class="hhash">a8f05b4</span>
+        </a>
+      </div>
       <div class="hero-eyebrow fade-item" style="--fd:0s"><span id="tw" data-text="~/aditya-sharma $ whoami"></span><span class="caret" aria-hidden="true"></span></div>
       <h1 aria-label="AI engineering, from CUDA kernels to agentic pipelines."><span class="w" style="--i:0" aria-hidden="true">AI</span> <span class="w" style="--i:1" aria-hidden="true">engineering,</span> <span class="w" style="--i:2" aria-hidden="true">from</span> <span class="w grad" style="--i:3" aria-hidden="true">CUDA</span> <span class="w grad" style="--i:4" aria-hidden="true">kernels</span> <span class="w" style="--i:5" aria-hidden="true">to</span> <span class="w grad" style="--i:6" aria-hidden="true">agentic</span> <span class="w grad" style="--i:7" aria-hidden="true">pipelines.</span></h1>
       <p class="lead fade-item" style="--fd:.5s">4th-year B.Tech (IT) student at IIIT Bhopal. I build production-style RAG and agent systems, and I go one layer down to understand — and rewrite — what's happening on the GPU underneath them.</p>
       <div class="hero-cta fade-item" style="--fd:.68s">
         <a class="btn btn-primary" href="#builds">See what I've built <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-pt" href="#pytorch">Merged into PyTorch <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
-        <a class="btn btn-ghost" href="#contact">Get in touch</a>
       </div>
     </div>
 
@@ -496,6 +603,15 @@
     </div>
   </section>
 
+  <!-- PYTORCH ANNOUNCEMENT STRIP -->
+  <section class="announce" aria-label="PyTorch contribution announcement">
+    <div class="announce-inner">
+      <svg class="announce-flame" aria-hidden="true"><use href="#i-flame"/></svg>
+      <p><strong>New — merged into PyTorch core.</strong> My pull request landed in <a href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">pytorch/pytorch</a> as commit <span class="mono">a8f05b4</span>, reviewed and merged by the maintainers.</p>
+      <a class="announce-link" href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">View the commit <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
   <!-- ABOUT -->
   <section class="section" id="about">
     <div class="section-head reveal"><span class="section-num">01</span><h2>About</h2><span class="section-rule" aria-hidden="true"></span></div>
@@ -513,6 +629,8 @@
       </div>
 
       <dl class="facts">
+        <dt>Open source</dt>
+        <dd>Contributor, <a href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">pytorch/pytorch</a> — code merged into core</dd>
         <dt>Education</dt>
         <dd>B.Tech, Information Technology<br>IIIT Bhopal, 2023–2027<br>CGPA 9.02 / 10.0</dd>
         <dt>Competitive programming</dt>
@@ -532,7 +650,7 @@
         <ul>
           <li><strong>CUDA kernel programming</strong> — writing, profiling with Nsight Compute/Systems, and optimizing kernels from naive to fused, vectorized implementations</li>
           <li><strong>GPU performance analysis</strong> — memory throttles, shared-memory tiling, vectorized loads, occupancy trade-offs</li>
-          <li><strong>PyTorch internals</strong> — attention mechanism internals, registering custom kernels into HuggingFace's AttentionInterface</li>
+          <li><strong>PyTorch internals</strong> — attention mechanism internals, registering custom kernels into HuggingFace's AttentionInterface; contributor to pytorch/pytorch core</li>
           <li><strong>Distributed training internals</strong> — currently studying DeepSeek V3's architecture from scratch</li>
         </ul>
       </div>
@@ -644,9 +762,73 @@
     </div>
   </section>
 
+  <!-- SHIPPED TO PYTORCH -->
+  <section class="section section-wide" id="pytorch">
+    <div class="section-head reveal"><span class="section-num">05</span><h2>Shipped to PyTorch</h2><span class="section-rule" aria-hidden="true"></span></div>
+
+    <article class="pt-feature reveal">
+      <div class="pt-main">
+        <div class="pt-kicker"><svg class="kf" aria-hidden="true"><use href="#i-flame"/></svg>pytorch/pytorch · merged into main</div>
+        <h3>A pull request of mine is now part of PyTorch itself.</h3>
+
+        <!-- EDIT: replace this paragraph with the actual subject of your PR —
+             what file/module it touched and what it fixed or added. -->
+        <p>I opened a pull request against pytorch/pytorch, worked it through review with the maintainers, and it merged into main as commit a8f05b4.</p>
+
+        <p>This one means a lot to me. I'd spent the past year studying PyTorch from the outside — reading its attention internals, profiling its kernels in Nsight, registering my own CUDA code against its interfaces. This is the view from the inside: a change to the framework itself, held to the same standard as any contributor's. From the next release on, every <span class="mono">pip install torch</span> carries a piece of code with my name on it.</p>
+
+        <div class="pt-stats">
+          <span>repo · pytorch/pytorch</span>
+          <span>commit · a8f05b4</span>
+          <span>status · merged</span>
+        </div>
+        <div class="pt-actions">
+          <a class="btn btn-pt" href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">View the commit <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">pytorch/pytorch</a>
+        </div>
+
+        <div class="pt-flow-wrap" aria-hidden="true">
+          <svg class="pt-flow" viewBox="0 0 260 52">
+            <text class="pt-lab pt-lab-mid" x="130" y="12" text-anchor="middle">pull request · maintainer review</text>
+            <path class="pt-flow-track" d="M26 22 H234"/>
+            <path class="pt-flow-line" d="M26 22 H234"/>
+            <circle class="pt-node-l" cx="26" cy="22" r="6"/>
+            <g class="pt-flow-pkt"><circle cx="26" cy="22" r="3.5"/></g>
+            <circle class="pt-ring" cx="234" cy="22" r="8"/>
+            <circle class="pt-fill" cx="234" cy="22" r="8"/>
+            <path class="pt-check" d="M230.9 22.3l2.2 2.2 4.3-4.9"/>
+            <text class="pt-lab" x="26" y="46" text-anchor="start">aditya/pytorch</text>
+            <text class="pt-lab" x="234" y="46" text-anchor="end">pytorch/main</text>
+          </svg>
+        </div>
+      </div>
+
+      <aside class="gh-card" aria-label="PyTorch repository summary">
+        <div class="gh-repo">
+          <svg class="ghf" aria-hidden="true"><use href="#i-flame"/></svg>
+          <span class="gh-repo-name">pytorch<em>/</em>pytorch</span>
+          <span class="gh-public">Public</span>
+        </div>
+        <a class="gh-commit" href="https://github.com/pytorch/pytorch/commit/a8f05b4c4f33a94860f139ebb6b46af0ae8cc2f1" target="_blank" rel="noopener">
+          <div class="gh-commit-head">
+            <svg class="gh-merged-ic" aria-hidden="true"><use href="#i-merged"/></svg>
+            <span class="gh-merged-label">Merged</span>
+            <span class="gh-hash">a8f05b4</span>
+          </div>
+          <span class="gh-commit-meta">landed in <b>main</b> · reviewed by the PyTorch maintainers</span>
+          <span class="gh-commit-meta">authored by <b>adityasharmaaaaa</b></span>
+        </a>
+        <div class="gh-stats">
+          <div class="gh-stat"><span class="gh-num">★ 80k+</span><span class="gh-sub">stars</span></div>
+          <div class="gh-stat"><span class="gh-num">1</span><span class="gh-sub">merged PR by me — so far</span></div>
+        </div>
+      </aside>
+    </article>
+  </section>
+
   <!-- MORE ON GITHUB -->
   <section class="section section-wide" id="more">
-    <div class="section-head reveal"><span class="section-num">05</span><h2>More on GitHub</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <div class="section-head reveal"><span class="section-num">06</span><h2>More on GitHub</h2><span class="section-rule" aria-hidden="true"></span></div>
     <p class="lead-p reveal">A few other things I've built exploring different corners of ML.</p>
     <div class="more-grid stagger">
       <a class="more-card" href="https://github.com/adityasharmaaaaa/WikiRace-RL" target="_blank" rel="noopener">
@@ -672,7 +854,8 @@
 
   <!-- OPEN SOURCE -->
   <section class="section" id="open-source">
-    <div class="section-head reveal"><span class="section-num">06</span><h2>Open source</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <div class="section-head reveal"><span class="section-num">07</span><h2>Open source</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <p class="lead-p reveal">Beyond PyTorch — smaller merges and work in progress.</p>
 
     <div class="oss-item reveal">
       <span class="build-status">Merged</span>
@@ -691,7 +874,7 @@
 
   <!-- NOTES -->
   <section class="section section-wide" id="notes">
-    <div class="section-head reveal"><span class="section-num">07</span><h2>Notes</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <div class="section-head reveal"><span class="section-num">08</span><h2>Notes</h2><span class="section-rule" aria-hidden="true"></span></div>
     <p class="lead-p reveal">Handwritten notes from working through topics in depth.</p>
     <div class="notes-grid stagger">
       <a class="note-card" href="https://drive.google.com/file/d/10r1_0j5PARBY6l-qZtMende5pClAuNNe/view?usp=sharing" target="_blank" rel="noopener">
@@ -723,7 +906,7 @@
 
   <!-- CURRENTLY -->
   <section class="section" id="now">
-    <div class="section-head reveal"><span class="section-num">08</span><h2>Right now</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <div class="section-head reveal"><span class="section-num">09</span><h2>Right now</h2><span class="section-rule" aria-hidden="true"></span></div>
     <ul class="now-list stagger">
       <li><span class="pulse-dot dot-xs"></span>Building Flash Attention from scratch</li>
       <li><span class="pulse-dot dot-xs"></span>Learning post-training — RLHF and RLVR</li>
@@ -733,7 +916,7 @@
 
   <!-- CONTACT -->
   <section class="section" id="contact">
-    <div class="section-head reveal"><span class="section-num">09</span><h2>Get in touch</h2><span class="section-rule" aria-hidden="true"></span></div>
+    <div class="section-head reveal"><span class="section-num">10</span><h2>Get in touch</h2><span class="section-rule" aria-hidden="true"></span></div>
     <p class="lead-p reveal">I'm looking for AI engineering roles and internships where I can keep working close to the metal. The fastest ways to reach me:</p>
     <dl class="contact-list reveal">
       <dt>Email</dt>
